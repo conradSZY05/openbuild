@@ -12,12 +12,17 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     setError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       setError(error.message)
-    } else {
-      window.location.href = '/projects'
+      return
     }
+    if (!data.user.email_confirmed_at) {
+      await supabase.auth.signOut()
+      setError('Please confirm your email before logging in. Check your inbox.')
+      return
+    }
+    window.location.href = '/projects'
   }
 
   const handleReset = async (e) => {
