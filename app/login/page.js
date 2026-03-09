@@ -12,17 +12,24 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     setError('')
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      setError(error.message)
-      return
-    }
-    if (!data.user.email_confirmed_at) {
-      await supabase.auth.signOut()
+
+    const res = await fetch('/api/check-confirmed', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    })
+    const { confirmed } = await res.json()
+    if (!confirmed) {
       setError('Please confirm your email before logging in. Check your inbox.')
       return
     }
-    window.location.href = '/projects'
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      setError(error.message)
+    } else {
+      window.location.href = '/projects'
+    }
   }
 
   const handleReset = async (e) => {
