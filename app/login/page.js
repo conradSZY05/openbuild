@@ -13,13 +13,14 @@ export default function Login() {
     e.preventDefault()
     setError('')
 
-    const res = await fetch('/api/check-confirmed', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    })
-    const { confirmed } = await res.json()
-    if (!confirmed) {
+      const res = await fetch('/api/check-confirmed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      const data = await res.json()
+      console.log('confirmed response:', data)
+      if (!data.confirmed) {
       setError('Please confirm your email before logging in. Check your inbox.')
       return
     }
