@@ -39,7 +39,6 @@ export default function ProjectPage({ params: paramsPromise }) {
         }
       }
 
-      // fetch comments
       const { data: commentData } = await supabase
         .from('comments')
         .select('*')
@@ -65,10 +64,7 @@ export default function ProjectPage({ params: paramsPromise }) {
     fetchData()
   }, [params.id])
 
-  const getAvatar = (avatarUrl, userId) => {
-    if (avatarUrl) return avatarUrl
-    return '/default-avatar.jpg'
-  }
+  const getAvatar = (avatarUrl) => avatarUrl || '/default-avatar.jpg'
 
   const getDisplayName = (p) => {
     if (!p) return loading ? '...' : 'Deleted User'
@@ -85,16 +81,13 @@ export default function ProjectPage({ params: paramsPromise }) {
   const handleSubmitComment = async () => {
     if (!newComment.trim()) return
     setSubmittingComment(true)
-
     const { data, error } = await supabase
       .from('comments')
       .insert({ project_id: params.id, user_id: user.id, content: newComment.trim() })
       .select()
       .single()
-
     if (!error && data) {
       setComments(prev => [...prev, data])
-      // add own profile to map if not there
       if (!commentProfiles[user.id]) {
         const { data: myProfile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
         if (myProfile) setCommentProfiles(prev => ({ ...prev, [user.id]: myProfile }))
@@ -123,17 +116,19 @@ export default function ProjectPage({ params: paramsPromise }) {
 
   return (
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
-    <div style={{ marginRight: '280px' }} className="flex-1">
+      <div className="flex-1 md:mr-72">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-3">
-          <div className="flex items-center gap-6">
+        <div className="flex flex-wrap justify-between items-center mb-3 gap-2 border-b border-stone-400 pb-3">
+          <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+              <img src="/logo.png" alt="OpenBuild" className="h-14 md:h-16 w-auto -mt-8 md:-mt-5" />
             </a>
-            <a href="/projects" className="text-sm font-medium text-stone-700 hover:underline">Projects</a>
-            <a href="/about" className="text-sm font-medium text-stone-700 hover:underline">About</a>
-            <span className="text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            <div className="flex items-center gap-2 md:gap-6">
+              <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">Projects</a>
+              <a href="/about" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">About</a>
+              <span className="text-xs md:text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            </div>
           </div>
           <div className="flex gap-2 items-center">
             {user ? (
@@ -159,56 +154,80 @@ export default function ProjectPage({ params: paramsPromise }) {
 
         {/* Title bar */}
         <div className="flex text-white text-sm mb-0" style={{ backgroundColor: '#2c4a7c' }}>
-          <div className="px-4 py-2 font-semibold" style={{ width: '200px', minWidth: '200px' }}>Posted By</div>
-          <div className="px-4 py-2 font-bold text-base flex-1" style={{ borderLeft: '2px solid #1e3560' }}>{project.title}</div>
+          <div className="hidden md:block px-4 py-2 font-semibold" style={{ width: '200px', minWidth: '200px' }}>Posted By</div>
+          <div className="px-4 py-2 font-bold text-base flex-1 md:border-l-2" style={{ borderColor: '#1e3560' }}>{project.title}</div>
           <div className="px-4 py-2 font-semibold text-right text-xs opacity-70 flex items-center gap-3" style={{ borderLeft: '2px solid #1e3560' }}>
             {new Date(project.created_at).toLocaleDateString('en-GB')}
             {user?.id === project.user_id && (
-              <button
-                onClick={handleDeleteProject}
-                className="text-red-300 hover:text-red-100 text-xs underline"
-              >Delete</button>
+              <button onClick={handleDeleteProject} className="text-red-300 hover:text-red-100 text-xs underline">Delete</button>
             )}
           </div>
         </div>
 
-        {/* Main content row */}
-        <div className="flex border border-stone-400 border-t-0">
+        {/* Main content — stacks on mobile */}
+        <div className="flex flex-col md:flex-row border border-stone-400 border-t-0">
 
-          {/* Left — profile sidebar */}
-          <div className="bg-stone-200 border-r border-stone-400 p-4 flex flex-col items-center text-center" style={{ width: '200px', minWidth: '200px' }}>
-            <img
-              src={getAvatar(profile?.avatar_url, project.user_id)}
-              alt="avatar"
-              style={{ display: 'block', width: '100px', height: '100px', objectFit: 'cover' }}
-              className="border border-stone-400 mb-3"
-            />
-            <p className="font-bold text-stone-800 text-sm break-all">{getDisplayName(profile)}</p>
-            {profile?.university && <p className="text-xs text-stone-500 mt-1">{profile.university}</p>}
-            {(profile?.degree || profile?.course) && (
-              <p className="text-xs text-stone-500">{[profile.degree, profile.course].filter(Boolean).join(' — ')}</p>
-            )}
-            {profile?.graduation_year && <p className="text-xs text-stone-400">Graduating {profile.graduation_year}</p>}
-            {profile?.skills && (
-              <div className="flex flex-wrap gap-1 mt-3 justify-center">
-                {profile.skills.split(',').map((s, i) => (
-                  <span key={i} className="text-white text-xs px-2 py-0.5" style={{ backgroundColor: '#2c4a7c' }}>{s.trim()}</span>
-                ))}
+          {/* Profile sidebar — horizontal strip on mobile, vertical column on desktop */}
+          <div className="bg-stone-200 md:border-r border-b md:border-b-0 border-stone-400 p-4 flex flex-row md:flex-col items-center md:text-center gap-4 md:gap-0" style={{ width: '100%', minWidth: 0 }}
+            // desktop width override
+          >
+            <div className="md:hidden flex items-center gap-4 w-full">
+              <img
+                src={getAvatar(profile?.avatar_url)}
+                alt="avatar"
+                style={{ width: '60px', height: '60px', objectFit: 'cover', flexShrink: 0 }}
+                className="border border-stone-400"
+              />
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-stone-800 text-sm">{getDisplayName(profile)}</p>
+                {profile?.university && <p className="text-xs text-stone-500">{profile.university}</p>}
+                {(profile?.degree || profile?.course) && (
+                  <p className="text-xs text-stone-500">{[profile.degree, profile.course].filter(Boolean).join(' — ')}</p>
+                )}
+                <div className="flex items-center gap-3 mt-1">
+                  <span className="text-xs text-stone-500">Rep: <span className="font-bold" style={{ color: '#2c4a7c' }}>{profile?.reputation || 0}</span></span>
+                  {project.user_id && (
+                    <a href={`/user/${project.user_id}`} className="text-xs underline" style={{ color: '#2c4a7c' }}>View Profile</a>
+                  )}
+                </div>
               </div>
-            )}
-            <div className="mt-4 pt-3 border-t border-stone-300 w-full">
-              <p className="text-xs text-stone-500 uppercase tracking-wide">Reputation</p>
-              <p className="text-2xl font-bold" style={{ color: '#2c4a7c' }}>{profile?.reputation || 0}</p>
             </div>
-            {project.user_id && (
-              <a href={`/user/${project.user_id}`} className="mt-2 text-xs underline" style={{ color: '#2c4a7c' }}>View Profile</a>
-            )}
-            <p className="text-xs text-stone-400 mt-3 border-t border-stone-300 pt-3 w-full">
-              Member since {profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-GB') : '—'}
-            </p>
+
+            {/* Desktop sidebar content */}
+            <div className="hidden md:flex flex-col items-center text-center w-full" style={{ width: '200px', minWidth: '200px' }}>
+              <img
+                src={getAvatar(profile?.avatar_url)}
+                alt="avatar"
+                style={{ display: 'block', width: '100px', height: '100px', objectFit: 'cover' }}
+                className="border border-stone-400 mb-3"
+              />
+              <p className="font-bold text-stone-800 text-sm break-all">{getDisplayName(profile)}</p>
+              {profile?.university && <p className="text-xs text-stone-500 mt-1">{profile.university}</p>}
+              {(profile?.degree || profile?.course) && (
+                <p className="text-xs text-stone-500">{[profile.degree, profile.course].filter(Boolean).join(' — ')}</p>
+              )}
+              {profile?.graduation_year && <p className="text-xs text-stone-400">Graduating {profile.graduation_year}</p>}
+              {profile?.skills && (
+                <div className="flex flex-wrap gap-1 mt-3 justify-center">
+                  {profile.skills.split(',').map((s, i) => (
+                    <span key={i} className="text-white text-xs px-2 py-0.5" style={{ backgroundColor: '#2c4a7c' }}>{s.trim()}</span>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 pt-3 border-t border-stone-300 w-full">
+                <p className="text-xs text-stone-500 uppercase tracking-wide">Reputation</p>
+                <p className="text-2xl font-bold" style={{ color: '#2c4a7c' }}>{profile?.reputation || 0}</p>
+              </div>
+              {project.user_id && (
+                <a href={`/user/${project.user_id}`} className="mt-2 text-xs underline" style={{ color: '#2c4a7c' }}>View Profile</a>
+              )}
+              <p className="text-xs text-stone-400 mt-3 border-t border-stone-300 pt-3 w-full">
+                Member since {profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-GB') : '—'}
+              </p>
+            </div>
           </div>
 
-          {/* Right — full project content */}
+          {/* Project content */}
           <div className="flex-1 bg-stone-100 p-6">
             {project.skills && (
               <div className="mb-6">
@@ -251,7 +270,6 @@ export default function ProjectPage({ params: paramsPromise }) {
               })()}
             </div>
 
-            {/* Contact */}
             <div className="border-t border-stone-300 pt-4 mt-4">
               <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1">Contact</p>
               {user ? (
@@ -269,15 +287,12 @@ export default function ProjectPage({ params: paramsPromise }) {
           </div>
         </div>
 
-        {/* Comments section */}
+        {/* Comments */}
         <div className="mt-4 border border-stone-400">
-
-          {/* Comments header */}
           <div className="px-4 py-2 text-white text-sm font-semibold" style={{ backgroundColor: '#2c4a7c' }}>
             Comments ({comments.length})
           </div>
 
-          {/* Comment list */}
           {comments.length === 0 && (
             <div className="bg-stone-100 px-4 py-6 text-stone-400 text-sm text-center border-b border-stone-400">
               No comments yet.
@@ -292,44 +307,37 @@ export default function ProjectPage({ params: paramsPromise }) {
                 className="flex border-b border-stone-400"
                 style={{ backgroundColor: index % 2 === 0 ? '#e7e5e4' : '#d6d3d1' }}
               >
-                {/* Comment author */}
-                <div className="flex flex-col items-center text-center p-3 border-r border-stone-400" style={{ width: '120px', minWidth: '120px' }}>
-                <a href={comment.user_id ? `/user/${comment.user_id}` : '#'} className="hover:opacity-80">
+                <div className="flex flex-col items-center text-center p-3 border-r border-stone-400" style={{ width: '80px', minWidth: '80px' }}>
+                  <a href={comment.user_id ? `/user/${comment.user_id}` : '#'} className="hover:opacity-80">
                     <img
-                    src={cp?.avatar_url || '/default-avatar.jpg'}
-                    alt="avatar"
-                    style={{ width: '40px', height: '40px', objectFit: 'cover', display: 'block' }}
-                    className="border border-stone-400 mb-1"
+                      src={cp?.avatar_url || '/default-avatar.jpg'}
+                      alt="avatar"
+                      style={{ width: '36px', height: '36px', objectFit: 'cover', display: 'block' }}
+                      className="border border-stone-400 mb-1"
                     />
-                </a>
-                <a href={comment.user_id ? `/user/${comment.user_id}` : '#'} className="text-xs font-bold text-stone-700 hover:underline" style={{ color: comment.user_id ? '#2c4a7c' : undefined }}>
+                  </a>
+                  <a href={comment.user_id ? `/user/${comment.user_id}` : '#'} className="text-xs font-bold hover:underline" style={{ color: comment.user_id ? '#2c4a7c' : '#78716c' }}>
                     {getDisplayName(cp)}
-                </a>
-                <p className="text-xs text-stone-400">{new Date(comment.created_at).toLocaleDateString('en-GB')}</p>
+                  </a>
+                  <p className="text-xs text-stone-400">{new Date(comment.created_at).toLocaleDateString('en-GB')}</p>
                 </div>
-
-                {/* Comment content */}
-                <div className="flex-1 px-4 py-3 flex justify-between items-start">
-                  <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">{comment.content}</p>
+                <div className="flex-1 px-4 py-3 flex justify-between items-start min-w-0">
+                  <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap break-words">{comment.content}</p>
                   {user?.id === comment.user_id && (
-                    <button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      className="text-xs text-red-400 hover:text-red-600 underline ml-4 shrink-0"
-                    >Delete</button>
+                    <button onClick={() => handleDeleteComment(comment.id)} className="text-xs text-red-400 hover:text-red-600 underline ml-4 shrink-0">Delete</button>
                   )}
                 </div>
               </div>
             )
           })}
 
-          {/* Add comment */}
           {user ? (
             <div className="bg-stone-100 p-4 flex gap-3 items-start">
               <img
                 src="/default-avatar.jpg"
                 alt="you"
-                style={{ width: '40px', height: '40px', objectFit: 'cover', display: 'block' }}
-                className="border border-stone-400 shrink-0"
+                style={{ width: '36px', height: '36px', objectFit: 'cover', display: 'block' }}
+                className="border border-stone-400 shrink-0 hidden sm:block"
               />
               <div className="flex-1 flex flex-col gap-2">
                 <textarea
@@ -352,7 +360,7 @@ export default function ProjectPage({ params: paramsPromise }) {
                   >
                     {submittingComment ? 'Posting...' : 'Post Comment'}
                   </button>
-                  <p className="text-xs text-stone-400">Ctrl+Enter to submit</p>
+                  <p className="text-xs text-stone-400 hidden sm:block">Ctrl+Enter to submit</p>
                 </div>
               </div>
             </div>
@@ -363,7 +371,6 @@ export default function ProjectPage({ params: paramsPromise }) {
           )}
         </div>
 
-        {/* Back link */}
         <div className="mt-4">
           <a href="/projects" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to projects</a>
         </div>
@@ -382,25 +389,21 @@ export default function ProjectPage({ params: paramsPromise }) {
         </div>
       )}
 
-      {/* Right sidebar */}
-      <div
-        className="fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4"
-        style={{ width: '260px' }}
-      >
+      {/* Right sidebar — desktop only */}
+      <div className="hidden md:block fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4" style={{ width: '260px' }}>
         <p className="text-xs text-stone-500 font-semibold uppercase tracking-wide mb-3">Societies and Events</p>
         <div className="bg-stone-300 border border-stone-400 p-3 text-xs text-stone-500 text-center">Your ad here</div>
       </div>
 
-        <div className="text-xs text-stone-400 text-center py-4">
-            <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
-            {' · '}
-            <a href="/terms" className="hover:underline" style={{ color: '#2c4a7c' }}>Terms of Service</a>
-            {' · '}
-            <span>contact@openbuild.net</span>
-            {' · '}
-            <span>© {new Date().getFullYear()} OpenBuild</span>
-        </div>  
-      
+      <div className="text-xs text-stone-400 text-center py-4 mt-8 md:mr-72">
+        <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
+        {' · '}
+        <a href="/terms" className="hover:underline" style={{ color: '#2c4a7c' }}>Terms of Service</a>
+        {' · '}
+        <span>contact@openbuild.net</span>
+        {' · '}
+        <span>© {new Date().getFullYear()} OpenBuild</span>
+      </div>
     </main>
   )
 }
