@@ -65,7 +65,7 @@ export default function Projects() {
         {/* Header */}
         <div className="flex justify-between items-center mb-3">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
           </a>
           <div className="flex gap-2 items-center">
             {user ? (
