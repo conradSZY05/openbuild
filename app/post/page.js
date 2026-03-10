@@ -155,8 +155,11 @@ export default function Post() {
     <div style={{ marginRight: '280px' }} className="flex-1">
         <div className="flex justify-between items-center mb-6">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
           </a>
+          <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
+          <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
+          <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
         </div>
         <div className="bg-stone-200 border border-stone-400 p-8 text-center">
           <h2 className="text-2xl font-bold text-stone-800 mb-2">Project posted!</h2>
@@ -174,9 +177,11 @@ export default function Post() {
 
         <div className="flex justify-between items-center mb-3">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
           </a>
-          <a href="/projects" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to projects</a>
+          <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
+          <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
+          <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
         </div>
 
         <div className="text-white px-4 py-2 font-semibold" style={{ backgroundColor: '#2c4a7c' }}>

@@ -25,8 +25,11 @@ export default function Confirm() {
     <main className="min-h-screen bg-stone-300 flex items-center justify-center px-4">
       <div className="bg-stone-200 border border-stone-400 p-8 max-w-md w-full text-center">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
           </a>
+          <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
+          <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
+          <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
         {status === 'loading' && <p className="text-stone-500">Confirming your email...</p>}
         {status === 'success' && (
           <>

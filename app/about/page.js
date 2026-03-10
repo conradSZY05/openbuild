@@ -20,9 +20,9 @@ export default function About() {
             <a href="/projects" className="hover:opacity-70">
               <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
             </a>
-            <a href="/projects" className="text-sm font-medium text-stone-700 hover:underline">Projects</a>
-            <a href="/about" className="text-sm font-medium text-stone-700 hover:underline">About</a>
-            <span className="text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
+            <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
+            <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
           </div>
           <div className="flex gap-2 items-center">
             {user ? (
@@ -61,17 +61,17 @@ export default function About() {
 
             <div>
               <h2 className="font-bold text-stone-800 mb-2">What is OpenBuild?</h2>
-              <p>OpenBuild is a platform for university students to find collaborators for side projects, hackathons, startups, coursework and more. Post what you're building, say what skills you're looking for, and connect with students across the UK and beyond.</p>
+              <p>OpenBuild is a platform for university students to find collaborators for side projects, hackathons, startups, coursework and more, as well as being a place for students to network and find exciting project inspiration. Post what you're building, say what skills you're looking for, and connect with students across the UK and beyond.</p>
             </div>
 
             <div>
               <h2 className="font-bold text-stone-800 mb-2">Why was it built?</h2>
-              <p>As an Electronic Engineering student at Manchester, I kept having ideas for projects but no easy way to find people with the right skills to build them with. Universities have thousands of talented students — engineers, designers, developers, scientists — but no central place to connect around projects. OpenBuild is my attempt to fix that.</p>
+              <p>As an Electronic Engineering student at Manchester, I kept having ideas for projects but no easy way to find people with the right skills to build them with. Universities have thousands of talented students - engineers, designers, developers, scientists - but no central place to connect around projects. OpenBuild is my attempt to fix that.</p>
             </div>
 
             <div>
               <h2 className="font-bold text-stone-800 mb-2">Who is it for?</h2>
-              <p>Any university student with a university email. Whether you have a project idea and need collaborators, you have skills and want to get involved in something interesting, or maybe you just want to show off your projects and network with like-minded students, — OpenBuild is for you.</p>
+              <p>Any university student with a university email. Whether you have a project idea and need collaborators, you have skills and want to get involved in something interesting, or maybe you just want to show off your projects and network with like-minded students, - OpenBuild is for you.</p>
             </div>
 
             <div className="border-t border-stone-300 pt-6">
@@ -94,6 +94,10 @@ export default function About() {
                   contact@openbuild.net
                 </a>
               </div>
+
+            <div className="border-t border-stone-300 pt-6 flex justify-center">
+            <img src="/logo-pure.png" alt="OpenBuild" style={{ height: '150px', opacity: 0.4 }} />
+            </div>
             </div>
 
           </div>

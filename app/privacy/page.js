@@ -4,9 +4,11 @@ export default function Privacy() {
       <div className="max-w-3xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
           </a>
-          <a href="/projects" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to projects</a>
+          <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
+          <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
+          <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
         </div>
         <div
           className="bg-white border border-stone-400 p-8 text-sm leading-relaxed"
