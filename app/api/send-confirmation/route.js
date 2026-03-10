@@ -7,8 +7,10 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
+
 export async function POST(request) {
   const { userId, email } = await request.json()
+  console.log('send-confirmation hit for:', email, userId)
 
   // Generate token
   const token = crypto.randomBytes(32).toString('hex')
