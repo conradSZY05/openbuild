@@ -8,24 +8,24 @@ const supabase = createClient(
 
 export async function POST(request) {
   const { token } = await request.json()
+  console.log('confirm-email hit with token:', token)
 
-  // Find token
   const { data, error } = await supabase
     .from('email_confirmations')
-    .select('*, profiles(email_verified)')
+    .select('*')
     .eq('token', token)
     .single()
+
+  console.log('lookup result:', JSON.stringify(data), 'error:', JSON.stringify(error))
 
   if (error || !data) return NextResponse.json({ error: 'Invalid token' }, { status: 400 })
   if (data.confirmed_at) return NextResponse.json({ alreadyConfirmed: true })
 
-  // Mark token as confirmed
   await supabase
     .from('email_confirmations')
     .update({ confirmed_at: new Date().toISOString() })
     .eq('token', token)
 
-  // Mark profile as verified
   await supabase
     .from('profiles')
     .update({ email_verified: true })
