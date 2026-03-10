@@ -36,14 +36,13 @@ export default function Login() {
   const handleReset = async (e) => {
     e.preventDefault()
     setError('')
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://www.openbuild.net/reset-password'
+    const res = await fetch('/api/send-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
     })
-    if (error) {
-      setError(error.message)
-    } else {
-      setResetSent(true)
-    }
+    if (res.ok) setResetSent(true)
+    else setError('Something went wrong, please try again')
   }
 
   if (resetMode) return (
