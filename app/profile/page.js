@@ -118,8 +118,8 @@ export default function Profile() {
 
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <a href="/projects" className="text-2xl font-bold text-stone-800 hover:opacity-70">
-            OpenBuild
+          <a href="/projects" className="hover:opacity-70">
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '32px' }} />
           </a>
           <a href="/projects" className="text-sm underline" style={{ color: '#2c4a7c' }}>
             ← Back to projects

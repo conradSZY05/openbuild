@@ -24,9 +24,9 @@ export default function Confirm() {
   return (
     <main className="min-h-screen bg-stone-300 flex items-center justify-center px-4">
       <div className="bg-stone-200 border border-stone-400 p-8 max-w-md w-full text-center">
-        <a href="/projects" className="text-2xl font-bold text-stone-800 hover:opacity-70 block mb-6">
-          OpenBuild
-        </a>
+          <a href="/projects" className="hover:opacity-70">
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '32px' }} />
+          </a>
         {status === 'loading' && <p className="text-stone-500">Confirming your email...</p>}
         {status === 'success' && (
           <>

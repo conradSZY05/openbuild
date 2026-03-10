@@ -154,7 +154,9 @@ export default function Post() {
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
     <div style={{ marginRight: '280px' }} className="flex-1">
         <div className="flex justify-between items-center mb-6">
-          <a href="/projects" className="text-2xl font-bold text-stone-800 hover:opacity-70">OpenBuild</a>
+          <a href="/projects" className="hover:opacity-70">
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '32px' }} />
+          </a>
         </div>
         <div className="bg-stone-200 border border-stone-400 p-8 text-center">
           <h2 className="text-2xl font-bold text-stone-800 mb-2">Project posted!</h2>
@@ -171,7 +173,9 @@ export default function Post() {
 
 
         <div className="flex justify-between items-center mb-3">
-          <a href="/projects" className="text-2xl font-bold text-stone-800 hover:opacity-70">OpenBuild</a>
+          <a href="/projects" className="hover:opacity-70">
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '32px' }} />
+          </a>
           <a href="/projects" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to projects</a>
         </div>
 
