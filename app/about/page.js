@@ -18,7 +18,7 @@ export default function About() {
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-6">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-8px' }} />
+              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
             </a>
             <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
             <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
