@@ -9,6 +9,13 @@ export default function ResetPassword() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
+    // Check for error in URL hash
+    const hash = window.location.hash
+    if (hash.includes('error=access_denied')) {
+      setError('Reset link has expired. Please request a new one.')
+      return
+    }
+
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setReady(true)
@@ -34,9 +41,18 @@ export default function ResetPassword() {
         <p className="text-stone-500 mb-6 text-sm">Choose a new password for your account</p>
         {done ? (
           <p className="text-green-600 text-sm">Password updated! Redirecting...</p>
+        ) : error ? (
+          <>
+            <p className="text-red-500 text-sm mb-3">{error}</p>
+            <a href="/login" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to login</a>
+          </>
         ) : !ready ? (
           <p className="text-stone-500 text-sm">Verifying reset link...</p>
         ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            ...
+          </form>
+        ) (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <input
               type="password"
