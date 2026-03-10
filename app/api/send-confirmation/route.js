@@ -1,10 +1,18 @@
-import crypto from 'crypto'
+import { createClient } from '@supabase/supabase-js'
+import { NextResponse } from 'next/server'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
 
 export async function POST(request) {
   const { userId, email } = await request.json()
   console.log('send-confirmation hit for:', email, userId)
 
-  const token = crypto.randomBytes(32).toString('hex')
+  const array = new Uint8Array(32)
+  globalThis.crypto.getRandomValues(array)
+  const token = Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('')
 
   const { error: tokenError } = await supabase
     .from('email_confirmations')
@@ -38,4 +46,5 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true })}
+  return NextResponse.json({ success: true })
+}
