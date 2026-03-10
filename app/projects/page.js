@@ -59,12 +59,12 @@ export default function Projects() {
         <div className="flex flex-wrap justify-between items-center mb-3 gap-2">
           <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" className="h-8 md:h-16" style={{ marginTop: '-20px' }} />
+              <img src="/logo.png" alt="OpenBuild" className="h-10 md:h-16" style={{ marginTop: '-20px' }} />
             </a>
               <div className="flex items-center gap-2 md:gap-6">
                 <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 hover:underline">Projects</a>
                 <a href="/about" className="text-xs md:text-sm font-medium text-stone-700 hover:underline">About</a>
-                <span className="text-xs md:text-sm text-stone-400 hidden sm:inline">Networking <span className="text-xs">(coming soon)</span></span>
+                <span className="text-xs md:text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
               </div>
           </div>
           <div className="flex gap-2 items-center">
