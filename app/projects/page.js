@@ -59,7 +59,7 @@ export default function Projects() {
         <div className="flex flex-wrap justify-between items-center mb-3 gap-2 border-b border-stone-400 pb-3">
           <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" className="h-12 md:h-16 w-auto -mt-10 md:-mt-5" />
+              <img src="/logo.png" alt="OpenBuild" className="h-14 md:h-16 w-auto -mt-8 md:-mt-5" />
             </a>
               <div className="flex items-center gap-2 md:gap-6">
                 <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">Projects</a>
