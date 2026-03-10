@@ -16,19 +16,23 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault()
     setError('')
-
     if (!isUniversityEmail(email)) {
       setError('You must use a university email address (.ac.uk or .edu)')
       return
     }
-
-    const { error } = await supabase.auth.signUp({ email, password })
-
+    const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) {
       setError(error.message)
-    } else {
-      setSuccess(true)
+      return
     }
+
+    await fetch('/api/send-confirmation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: data.user.id, email })
+    })
+
+    setSuccess(true)
   }
 
 if (success) {
