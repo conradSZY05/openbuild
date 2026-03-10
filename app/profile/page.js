@@ -91,10 +91,10 @@ export default function Profile() {
     if (!error) setSaved(true)
   }
 
-    const getAvatar = () => {
+  const getAvatar = () => {
     if (avatarUrl) return avatarUrl
     return '/default-avatar.jpg'
-    }
+  }
 
   const getDisplayEmail = () => {
     if (!user) return ''
@@ -111,27 +111,36 @@ export default function Profile() {
     </main>
   )
 
-  
   return (
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
-        <div className="max-w-4xl mx-auto flex-1 w-full">
+      <div className="flex-1 w-full max-w-4xl mx-auto">
 
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-6">
+        {/* Nav */}
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-2 border-b border-stone-400 pb-3">
+          <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+              <img src="/logo.png" alt="OpenBuild" className="h-14 md:h-16 w-auto -mt-8 md:-mt-5" />
             </a>
-            <a href="/projects" className="text-sm font-medium text-stone-700 hover:underline">Projects</a>
-            <a href="/about" className="text-sm font-medium text-stone-700 hover:underline">About</a>
-            <span className="text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            <div className="flex items-center gap-2 md:gap-6">
+              <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">Projects</a>
+              <a href="/about" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">About</a>
+              <span className="text-xs md:text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            </div>
+          </div>
+          <div className="flex gap-2 items-center">
+            <a href="/profile" className="text-xs md:text-sm font-medium text-stone-700 hover:underline">My Profile</a>
+            <button
+              onClick={async () => { await supabase.auth.signOut(); window.location.href = '/login' }}
+              className="text-xs md:text-sm font-medium text-stone-500 hover:underline"
+            >Log Out</button>
           </div>
         </div>
 
-        <div className="flex gap-4 items-start">
+        {/* Content — stacks on mobile, side by side on desktop */}
+        <div className="flex flex-col md:flex-row gap-4 items-start">
 
           {/* Left — edit form */}
-          <div className="bg-stone-200 border border-stone-400 p-6 flex-1">
+          <div className="bg-stone-200 border border-stone-400 p-6 w-full md:flex-1">
             <h2 className="text-lg font-bold text-stone-800 mb-4">Edit Profile</h2>
             <form onSubmit={handleSave} className="flex flex-col gap-4">
               <div>
@@ -178,58 +187,52 @@ export default function Profile() {
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-1">Skills</label>
                 <input
                   type="text"
-                  placeholder="e.g. Python, SolidWorks, PCB design, VHDL, VLSI design"
+                  placeholder="e.g. Python, SolidWorks, PCB design"
                   value={skills}
                   onChange={(e) => setSkills(e.target.value)}
                   className="border border-stone-400 px-4 py-2 text-stone-800 bg-stone-100 focus:outline-none w-full"
                 />
               </div>
 
-                {/* Avatar upload */}
-                <div>
+              {/* Avatar upload */}
+              <div>
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-2">Profile Picture</label>
                 <div className="flex items-center gap-3">
-                    <img
+                  <img
                     src={getAvatar()}
                     alt="avatar"
-                    style={{ display: 'block', width: '60px', height: '60px' }}
+                    style={{ display: 'block', width: '60px', height: '60px', objectFit: 'cover' }}
                     className="border border-stone-400"
-                    />
-                    <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                        <label
+                  />
+                  <div className="flex flex-col gap-1">
+                    <div className="flex gap-2 flex-wrap">
+                      <label
                         className="cursor-pointer text-white text-xs px-3 py-2 font-medium"
                         style={{ backgroundColor: '#2c4a7c' }}
                         onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#1e3560' }}
                         onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#2c4a7c' }}
-                        >
+                      >
                         Upload Photo
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleAvatarUpload}
-                            className="hidden"
-                        />
-                        </label>
-                        {avatarUrl && (
+                        <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
+                      </label>
+                      {avatarUrl && (
                         <button
-                            type="button"
-                            onClick={async () => {
+                          type="button"
+                          onClick={async () => {
                             await supabase.from('profiles').update({ avatar_url: null }).eq('id', user.id)
                             setAvatarUrl(null)
-                            }}
-                            className="text-xs px-3 py-2 font-medium border border-red-300 text-red-400 hover:bg-red-50"
+                          }}
+                          className="text-xs px-3 py-2 font-medium border border-red-300 text-red-400 hover:bg-red-50"
                         >
-                            Remove
+                          Remove
                         </button>
-                        )}
+                      )}
                     </div>
                     {uploadingAvatar && <p className="text-xs text-stone-400">Uploading...</p>}
                     {avatarUploadError && <p className="text-xs text-red-500">{avatarUploadError}</p>}
-                    </div>
+                  </div>
                 </div>
-                </div>
-
+              </div>
 
               {/* Anonymity toggle */}
               <div className="flex items-center gap-3 border border-stone-400 bg-stone-100 px-4 py-3">
@@ -263,14 +266,14 @@ export default function Profile() {
             </form>
           </div>
 
-          {/* Right — preview */}
-          <div className="bg-stone-200 border border-stone-400 p-6" style={{ width: '300px', minWidth: '300px' }}>
+          {/* Right — preview: full width on mobile, fixed width on desktop */}
+          <div className="bg-stone-200 border border-stone-400 p-6 w-full md:w-72 md:min-w-72">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-4">Profile Preview</p>
             <img
-            src={getAvatar()}
-            alt="avatar"
-            style={{ display: 'block', width: '120px', height: '120px', objectFit: 'cover' }}
-            className="border border-stone-400 mb-4"
+              src={getAvatar()}
+              alt="avatar"
+              style={{ display: 'block', width: '120px', height: '120px', objectFit: 'cover' }}
+              className="border border-stone-400 mb-4"
             />
             <p className="font-bold text-stone-800 break-all">{getDisplayEmail()}</p>
             {university && <p className="text-sm text-stone-500 mt-1">{university}</p>}
@@ -291,20 +294,20 @@ export default function Profile() {
               Member since {new Date(user.created_at).toLocaleDateString('en-GB')}
             </p>
           </div>
-          
 
         </div>
       </div>
 
-        <div className="text-xs text-stone-400 text-center py-4">
-            <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
-            {' · '}
-            <a href="/terms" className="hover:underline" style={{ color: '#2c4a7c' }}>Terms of Service</a>
-            {' · '}
-            <span>contact@openbuild.net</span>
-            {' · '}
-            <span>© {new Date().getFullYear()} OpenBuild</span>
-        </div>  
+      {/* Footer */}
+      <div className="text-xs text-stone-400 text-center py-4 mt-8">
+        <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
+        {' · '}
+        <a href="/terms" className="hover:underline" style={{ color: '#2c4a7c' }}>Terms of Service</a>
+        {' · '}
+        <span>contact@openbuild.net</span>
+        {' · '}
+        <span>© {new Date().getFullYear()} OpenBuild</span>
+      </div>
     </main>
   )
 }
