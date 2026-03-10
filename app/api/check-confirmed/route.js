@@ -8,20 +8,23 @@ const supabase = createClient(
 
 export async function POST(request) {
   const { email } = await request.json()
+  console.log('check-confirmed for:', email)
 
-  // Get user id from auth
   const { data: authData, error } = await supabase.auth.admin.listUsers()
-  if (error) return NextResponse.json({ confirmed: false })
+  if (error) { console.log('auth error:', error); return NextResponse.json({ confirmed: false }) }
 
   const user = authData.users.find(u => u.email === email)
+  console.log('user found:', user?.id)
+
   if (!user) return NextResponse.json({ confirmed: false })
 
-  // Check our own email_verified flag
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('email_verified')
     .eq('id', user.id)
     .single()
+
+  console.log('profile:', JSON.stringify(profile), 'error:', JSON.stringify(profileError))
 
   return NextResponse.json({ confirmed: !!profile?.email_verified })
 }
