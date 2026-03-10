@@ -178,12 +178,14 @@ export default function Post() {
 
 
         <div className="flex justify-between items-center mb-3">
-          <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
-          </a>
-          <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
-          <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
-          <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+          <div className="flex items-center gap-6">
+            <a href="/projects" className="hover:opacity-70">
+              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+            </a>
+            <a href="/projects" className="text-sm font-medium text-stone-700 hover:underline">Projects</a>
+            <a href="/about" className="text-sm font-medium text-stone-700 hover:underline">About</a>
+            <span className="text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+          </div>
         </div>
 
         <div className="text-white px-4 py-2 font-semibold" style={{ backgroundColor: '#2c4a7c' }}>

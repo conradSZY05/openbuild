@@ -96,7 +96,7 @@ export default function About() {
               </div>
 
             <div className="border-t border-stone-300 pt-6 flex justify-center">
-            <img src="/logo-pure.png" alt="OpenBuild" style={{ height: '150px', opacity: 0.4 }} />
+            <img src="/logo-pure.png" alt="OpenBuild" style={{ height: '150px', opacity: 0.67 }} />
             </div>
             </div>
 
