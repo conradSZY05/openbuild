@@ -102,12 +102,10 @@ export default function Post() {
     }
   }
 
-  // Extract plain text and image URLs from the editor HTML
   const getDescriptionAndImages = () => {
     const editor = editorRef.current
     if (!editor) return { description: '', images: [] }
     const images = []
-    
     const walk = (node) => {
       let text = ''
       for (const child of node.childNodes) {
@@ -119,15 +117,13 @@ export default function Post() {
         } else if (child.nodeName === 'BR') {
           text += '\n'
         } else if (child.nodeName === 'DIV' || child.nodeName === 'P') {
-          const inner = walk(child)
-          text += '\n' + inner
+          text += '\n' + walk(child)
         } else {
           text += walk(child)
         }
       }
       return text
     }
-
     const description = walk(editor).replace(/^\n/, '').replace(/\n{3,}/g, '\n\n')
     return { description, images }
   }
@@ -136,7 +132,6 @@ export default function Post() {
     e.preventDefault()
     setError('')
     const { description, images } = getDescriptionAndImages()
-
     const { data, error } = await supabase.from('projects').insert({
       title,
       description,
@@ -145,22 +140,23 @@ export default function Post() {
       images,
       user_id: user.id
     }).select().single()
-
     if (error) setError(error.message)
     else window.location.href = `/projects/${data.id}`
   }
 
   if (success) return (
-    <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
-    <div style={{ marginRight: '280px' }} className="flex-1">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-6">
+    <main className="min-h-screen bg-stone-300 px-4 py-8">
+      <div className="flex-1 md:mr-72">
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-2 border-b border-stone-400 pb-3">
+          <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+              <img src="/logo.png" alt="OpenBuild" className="h-14 md:h-16 w-auto -mt-8 md:-mt-5" />
             </a>
-            <a href="/projects" className="text-sm font-medium text-stone-700 hover:underline">Projects</a>
-            <a href="/about" className="text-sm font-medium text-stone-700 hover:underline">About</a>
-            <span className="text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            <div className="flex items-center gap-2 md:gap-6">
+              <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">Projects</a>
+              <a href="/about" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">About</a>
+              <span className="text-xs md:text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            </div>
           </div>
         </div>
         <div className="bg-stone-200 border border-stone-400 p-8 text-center">
@@ -174,17 +170,30 @@ export default function Post() {
 
   return (
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
-    <div style={{ marginRight: '280px' }} className="flex-1">
+      <div className="flex-1 md:mr-72">
 
-
-        <div className="flex justify-between items-center mb-3">
-          <div className="flex items-center gap-6">
+        {/* Nav */}
+        <div className="flex flex-wrap justify-between items-center mb-3 gap-2 border-b border-stone-400 pb-3">
+          <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+              <img src="/logo.png" alt="OpenBuild" className="h-14 md:h-16 w-auto -mt-8 md:-mt-5" />
             </a>
-            <a href="/projects" className="text-sm font-medium text-stone-700 hover:underline">Projects</a>
-            <a href="/about" className="text-sm font-medium text-stone-700 hover:underline">About</a>
-            <span className="text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            <div className="flex items-center gap-2 md:gap-6">
+              <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">Projects</a>
+              <a href="/about" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">About</a>
+              <span className="text-xs md:text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            </div>
+          </div>
+          <div className="flex gap-2 items-center">
+            {user && (
+              <>
+                <a href="/profile" className="text-xs md:text-sm font-medium text-stone-700 hover:underline">My Profile</a>
+                <button
+                  onClick={async () => { await supabase.auth.signOut(); window.location.href = '/login' }}
+                  className="text-xs md:text-sm font-medium text-stone-500 hover:underline"
+                >Log Out</button>
+              </>
+            )}
           </div>
         </div>
 
@@ -192,12 +201,13 @@ export default function Post() {
           Post a Project
         </div>
 
-        <div className="flex border border-stone-400 border-t-0">
+        {/* On mobile: stacked. On desktop: side-by-side with info panel */}
+        <div className="flex flex-col md:flex-row border border-stone-400 border-t-0">
 
-          {/* Left — info panel */}
-          <div className="bg-stone-200 border-r border-stone-400 p-4 flex flex-col items-center text-center" style={{ width: '200px', minWidth: '200px' }}>
+          {/* Info panel — hidden on mobile, shown on desktop */}
+          <div className="hidden md:flex bg-stone-200 border-r border-stone-400 p-4 flex-col items-center text-center" style={{ width: '200px', minWidth: '200px' }}>
             <img
-              src={profile?.avatar_url || `/default-avatar.jpg`}
+              src={profile?.avatar_url || '/default-avatar.jpg'}
               alt="avatar"
               style={{ display: 'block', width: '80px', height: '80px', objectFit: 'cover' }}
               className="border border-stone-400 mb-3"
@@ -213,12 +223,12 @@ export default function Post() {
             </div>
           </div>
 
-          {/* Right — form */}
-          <div className="flex-1 bg-stone-100 p-6">
+          {/* Form */}
+          <div className="flex-1 bg-stone-100 p-4 md:p-6">
             <form onSubmit={handleSubmit} className="flex flex-col">
 
               {/* Title */}
-              <div className="py-6 border-b border-stone-300">
+              <div className="py-5 border-b border-stone-300">
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-2">Project Title</label>
                 <input
                   type="text"
@@ -230,12 +240,14 @@ export default function Post() {
                 />
               </div>
 
-              {/* Description — rich editor */}
-              <div className="py-6 border-b border-stone-300">
+              {/* Description */}
+              <div className="py-5 border-b border-stone-300">
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-2">
                   Description
                   {uploading && <span className="ml-2 text-stone-400 normal-case font-normal">Uploading image...</span>}
                 </label>
+                {/* Mobile tip (only shown on mobile since info panel is hidden) */}
+                <p className="text-xs text-stone-400 mb-2 md:hidden">💡 You can drag & drop or paste images directly into the description.</p>
                 <div
                   ref={editorRef}
                   contentEditable
@@ -250,7 +262,7 @@ export default function Post() {
                     lineHeight: '1.6',
                     whiteSpace: 'pre-wrap'
                   }}
-                  data-placeholder="Describe your project... drag & drop or paste images anywhere inline"
+                  data-placeholder="Describe your project..."
                 />
                 <style>{`
                   [contenteditable]:empty:before {
@@ -262,7 +274,7 @@ export default function Post() {
               </div>
 
               {/* Skills */}
-              <div className="py-6 border-b border-stone-300">
+              <div className="py-5 border-b border-stone-300">
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-2">Seeking</label>
                 {skills.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-3">
@@ -281,13 +293,13 @@ export default function Post() {
                     value={skillInput}
                     onChange={(e) => setSkillInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addSkill(skillInput) } }}
-                    className="border border-stone-400 px-4 py-2 text-stone-800 bg-white focus:outline-none flex-1"
+                    className="border border-stone-400 px-4 py-2 text-stone-800 bg-white focus:outline-none flex-1 min-w-0"
                     list="skills-list"
                   />
                   <datalist id="skills-list">
                     {existingSkills.map(s => <option key={s} value={s} />)}
                   </datalist>
-                  <button type="button" onClick={() => addSkill(skillInput)} className="text-white px-3 py-2 text-sm" style={{ backgroundColor: '#2c4a7c' }}>
+                  <button type="button" onClick={() => addSkill(skillInput)} className="text-white px-3 py-2 text-sm shrink-0" style={{ backgroundColor: '#2c4a7c' }}>
                     Add
                   </button>
                 </div>
@@ -306,7 +318,7 @@ export default function Post() {
               </div>
 
               {/* Contact */}
-              <div className="py-6 border-b border-stone-300">
+              <div className="py-5 border-b border-stone-300">
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-2">Contact</label>
                 <textarea
                   placeholder="How should people reach you? (email, LinkedIn, Discord...)"
@@ -319,7 +331,7 @@ export default function Post() {
 
               {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
 
-              <div className="pt-6">
+              <div className="pt-5">
                 <button
                   type="button"
                   onClick={handleSubmit}
@@ -337,27 +349,24 @@ export default function Post() {
         </div>
       </div>
 
-      {/* Right sidebar */}
-      <div
-        className="fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4"
-        style={{ width: '260px' }}
-      >
+      {/* Right sidebar — desktop only */}
+      <div className="hidden md:block fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4" style={{ width: '260px' }}>
         <p className="text-xs text-stone-500 font-semibold uppercase tracking-wide mb-3">Societies and Events</p>
         <div className="bg-stone-300 border border-stone-400 p-3 text-xs text-stone-500 text-center">
           Your ad here
         </div>
       </div>
 
-        <div className="text-xs text-stone-400 text-center py-4">
-            <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
-            {' · '}
-            <a href="/terms" className="hover:underline" style={{ color: '#2c4a7c' }}>Terms of Service</a>
-            {' · '}
-            <span>contact@openbuild.net</span>
-            {' · '}
-            <span>© {new Date().getFullYear()} OpenBuild</span>
-        </div>  
-      
+      {/* Footer */}
+      <div className="text-xs text-stone-400 text-center py-4 mt-8 md:mr-72">
+        <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
+        {' · '}
+        <a href="/terms" className="hover:underline" style={{ color: '#2c4a7c' }}>Terms of Service</a>
+        {' · '}
+        <span>contact@openbuild.net</span>
+        {' · '}
+        <span>© {new Date().getFullYear()} OpenBuild</span>
+      </div>
     </main>
   )
 }
