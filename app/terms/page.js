@@ -1,19 +1,21 @@
-export default function Privacy() {
+export default function Terms() {
   return (
     <main className="min-h-screen bg-stone-300 px-4 py-8">
       <div className="max-w-3xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-6">
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-2 border-b border-stone-400 pb-3">
+          <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
-              <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
+              <img src="/logo.png" alt="OpenBuild" className="h-14 md:h-16 w-auto -mt-8 md:-mt-5" />
             </a>
-            <a href="/projects" className="text-sm font-large text-stone-700 hover:underline">Projects</a>
-            <a href="/about" className="text-sm font-large text-stone-700 hover:underline">About</a>
-            <span className="text-sm font-large text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            <div className="flex items-center gap-2 md:gap-6">
+              <a href="/projects" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">Projects</a>
+              <a href="/about" className="text-xs md:text-sm font-medium text-stone-700 underline hover:opacity-70">About</a>
+              <span className="text-xs md:text-sm text-stone-400">Networking <span className="text-xs">(coming soon)</span></span>
+            </div>
           </div>
         </div>
         <div
-          className="bg-white border border-stone-400 p-8 text-sm leading-relaxed"
+          className="bg-white border border-stone-400 p-8 text-sm leading-relaxed whitespace-pre-line"
           dangerouslySetInnerHTML={{ __html: POLICY }}
         />
       </div>
@@ -23,7 +25,6 @@ export default function Privacy() {
 
 const POLICY = `
 TERMS OF SERVICE
-
 Last updated: March 09, 2026
 
 1. ACCEPTANCE
