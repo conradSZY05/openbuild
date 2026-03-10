@@ -155,7 +155,7 @@ export default function Post() {
     <div style={{ marginRight: '280px' }} className="flex-1">
         <div className="flex justify-between items-center mb-6">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '32px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
           </a>
         </div>
         <div className="bg-stone-200 border border-stone-400 p-8 text-center">
@@ -174,7 +174,7 @@ export default function Post() {
 
         <div className="flex justify-between items-center mb-3">
           <a href="/projects" className="hover:opacity-70">
-            <img src="/logo.png" alt="OpenBuild" style={{ height: '32px' }} />
+            <img src="/logo.png" alt="OpenBuild" style={{ height: '75px', marginTop: '-20px' }} />
           </a>
           <a href="/projects" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to projects</a>
         </div>
