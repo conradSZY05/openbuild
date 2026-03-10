@@ -1,36 +1,32 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('')
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
-  const [ready, setReady] = useState(false)
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
-    // Check for error in URL hash
-    const hash = window.location.hash
-    if (hash.includes('error=access_denied')) {
-      setError('Reset link has expired. Please request a new one.')
-      return
-    }
-
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setReady(true)
-      }
-    })
+    const t = new URLSearchParams(window.location.search).get('token')
+    if (!t) setError('Invalid reset link')
+    else setToken(t)
   }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { error } = await supabase.auth.updateUser({ password })
-    if (error) {
-      setError(error.message)
+    setError('')
+    const res = await fetch('/api/do-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password })
+    })
+    const data = await res.json()
+    if (data.error) {
+      setError(data.error)
     } else {
       setDone(true)
-      setTimeout(() => window.location.href = '/projects', 2000)
+      setTimeout(() => window.location.href = '/login', 2000)
     }
   }
 
@@ -40,19 +36,13 @@ export default function ResetPassword() {
         <h2 className="text-2xl font-bold text-stone-800 mb-1">New Password</h2>
         <p className="text-stone-500 mb-6 text-sm">Choose a new password for your account</p>
         {done ? (
-          <p className="text-green-600 text-sm">Password updated! Redirecting...</p>
-        ) : error ? (
+          <p className="text-green-600 text-sm">Password updated! Redirecting to login...</p>
+        ) : error && !token ? (
           <>
             <p className="text-red-500 text-sm mb-3">{error}</p>
             <a href="/login" className="text-sm underline" style={{ color: '#2c4a7c' }}>← Back to login</a>
           </>
-        ) : !ready ? (
-          <p className="text-stone-500 text-sm">Verifying reset link...</p>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            ...
-          </form>
-        ) (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <input
               type="password"
