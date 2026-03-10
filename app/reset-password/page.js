@@ -6,6 +6,15 @@ export default function ResetPassword() {
   const [password, setPassword] = useState('')
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setReady(true)
+      }
+    })
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -25,6 +34,8 @@ export default function ResetPassword() {
         <p className="text-stone-500 mb-6 text-sm">Choose a new password for your account</p>
         {done ? (
           <p className="text-green-600 text-sm">Password updated! Redirecting...</p>
+        ) : !ready ? (
+          <p className="text-stone-500 text-sm">Verifying reset link...</p>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <input
