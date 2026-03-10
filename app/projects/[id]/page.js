@@ -168,9 +168,7 @@ export default function ProjectPage({ params: paramsPromise }) {
         <div className="flex flex-col md:flex-row border border-stone-400 border-t-0">
 
           {/* Profile sidebar — horizontal strip on mobile, vertical column on desktop */}
-          <div className="bg-stone-200 md:border-r border-b md:border-b-0 border-stone-400 p-4 flex flex-row md:flex-col items-center md:text-center gap-4 md:gap-0" style={{ width: '100%', minWidth: 0 }}
-            // desktop width override
-          >
+          <div className="bg-stone-200 md:border-r border-b md:border-b-0 border-stone-400 p-4 flex flex-row md:flex-col items-center md:text-center gap-4 md:gap-0 md:w-52 md:min-w-52">
             <div className="md:hidden flex items-center gap-4 w-full">
               <img
                 src={getAvatar(profile?.avatar_url)}
