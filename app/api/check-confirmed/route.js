@@ -8,11 +8,16 @@ const supabase = createClient(
 
 export async function POST(request) {
   const { email } = await request.json()
+  console.log('API hit for:', email)
+  
   const { data, error } = await supabase.auth.admin.listUsers()
+  console.log('listUsers error:', error)
+  console.log('user count:', data?.users?.length)
+  
   if (error) return NextResponse.json({ confirmed: false })
   
   const user = data.users.find(u => u.email === email)
-  if (!user) return NextResponse.json({ confirmed: false })
+  console.log('user confirmed at:', user?.email_confirmed_at)
   
-  return NextResponse.json({ confirmed: !!user.email_confirmed_at })
+  return NextResponse.json({ confirmed: !!user?.email_confirmed_at })
 }
