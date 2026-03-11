@@ -10,9 +10,9 @@ const supabase = createClient(
 export async function POST(request) {
   const { userId, email } = await request.json()
 
-  //if (!isUniversityEmail(email)) {                                     
-  //  return NextResponse.json({ error: 'Invalid email' }, { status: 400 }) 
-  //}     
+  if (!isUniversityEmail(email)) {                                     
+    return NextResponse.json({ error: 'Invalid email' }, { status: 400 }) 
+  }     
 
   console.log('send-confirmation hit for:', email, userId)
 
