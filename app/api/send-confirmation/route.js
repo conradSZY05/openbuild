@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
+import { isUniversityEmail } from '../../lib/universityEmail' 
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -8,6 +9,11 @@ const supabase = createClient(
 
 export async function POST(request) {
   const { userId, email } = await request.json()
+
+  if (!isUniversityEmail(email)) {                                     
+    return NextResponse.json({ error: 'Invalid email' }, { status: 400 }) 
+  }     
+
   console.log('send-confirmation hit for:', email, userId)
 
   const array = new Uint8Array(32)
