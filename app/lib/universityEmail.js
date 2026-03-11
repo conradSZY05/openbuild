@@ -1,7 +1,7 @@
 // Academic TLD suffixes — covers most of the world
 const ACADEMIC_TLDS = [
   // Generic
-  '.edu',
+  '.edu', '.com',
   // UK & Ireland
   '.ac.uk', '.ac.ie',
   // Australia & NZ
