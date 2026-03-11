@@ -10,9 +10,9 @@ const supabase = createClient(
 export async function POST(request) {
   const { userId, email } = await request.json()
 
-  if (!isUniversityEmail(email)) {                                     
-    return NextResponse.json({ error: 'Invalid email' }, { status: 400 }) 
-  }     
+  //if (!isUniversityEmail(email)) {                                     
+  //  return NextResponse.json({ error: 'Invalid email' }, { status: 400 }) 
+  //}     
 
   console.log('send-confirmation hit for:', email, userId)
 
@@ -41,7 +41,13 @@ export async function POST(request) {
       from: 'OpenBuild <contact@openbuild.net>',
       to: email,
       subject: 'Confirm your OpenBuild account',
-      html: `<a href="https://www.openbuild.net/confirm?token=${token}">Confirm Email</a>`
+      html: `
+        <p>Thanks for signing up to OpenBuild.</p>
+        <p>Please confirm your email address by clicking the link below:</p>
+        <p><a href="https://www.openbuild.net/confirm?token=${token}">Confirm your email</a></p>
+        <p>If you didn't sign up, you can ignore this email.</p>
+        <p>— The OpenBuild Team</p>
+      `
     })
   })
 
