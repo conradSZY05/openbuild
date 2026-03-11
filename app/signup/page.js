@@ -13,11 +13,12 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault()
     setError('')
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    console.log('email check:', email, isUniversityEmail(email))
     if (!isUniversityEmail(email)) {
       setError('You must use a university email address. If yours is not recognised, contact us at contact@openbuild.net')
       return
     }
-    const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) {
       setError(error.message)
       return
