@@ -11,6 +11,9 @@ export default function Profile() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const [avatarUploadError, setAvatarUploadError] = useState('')
   const [avatarUrl, setAvatarUrl] = useState(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   const [skills, setSkills] = useState('')
   const [course, setCourse] = useState('')
@@ -91,6 +94,26 @@ export default function Profile() {
     if (!error) setSaved(true)
   }
 
+  const handleDeleteAccount = async () => {
+    setDeleting(true)
+    setDeleteError('')
+
+    const res = await fetch('/api/delete-account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id })
+    })
+
+    if (!res.ok) {
+      setDeleteError('Failed to delete account, please try again or contact contact@openbuild.net')
+      setDeleting(false)
+      return
+    }
+
+    await supabase.auth.signOut()
+    window.location.href = '/projects'
+  }
+
   const getAvatar = () => {
     if (avatarUrl) return avatarUrl
     return '/default-avatar.jpg'
@@ -136,7 +159,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Content — stacks on mobile, side by side on desktop */}
+        {/* Content */}
         <div className="flex flex-col md:flex-row gap-4 items-start">
 
           {/* Left — edit form */}
@@ -264,9 +287,46 @@ export default function Profile() {
               </button>
               {saved && <p className="text-green-600 text-sm text-center">Profile saved!</p>}
             </form>
+
+            {/* Delete account */}
+            <div className="mt-8 pt-6 border-t border-stone-300">
+              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-3">Danger Zone</p>
+              {!showDeleteConfirm ? (
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="text-xs px-4 py-2 border border-red-300 text-red-400 hover:bg-red-50 font-medium"
+                >
+                  Delete Account
+                </button>
+              ) : (
+                <div className="border border-red-300 bg-red-50 p-4">
+                  <p className="text-sm text-red-700 font-medium mb-1">Are you sure?</p>
+                  <p className="text-xs text-red-500 mb-4">This will permanently delete your account and all your data. Your posted projects will remain but will be anonymised.</p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleDeleteAccount}
+                      disabled={deleting}
+                      className="text-xs px-4 py-2 bg-red-500 text-white font-medium hover:bg-red-600 disabled:opacity-50"
+                    >
+                      {deleting ? 'Deleting...' : 'Yes, delete my account'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowDeleteConfirm(false)}
+                      className="text-xs px-4 py-2 border border-stone-400 text-stone-600 hover:bg-stone-200 font-medium"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  {deleteError && <p className="text-xs text-red-500 mt-2">{deleteError}</p>}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Right — preview: full width on mobile, fixed width on desktop */}
+          {/* Right — preview */}
           <div className="bg-stone-200 border border-stone-400 p-6 w-full md:w-72 md:min-w-72">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-4">Profile Preview</p>
             <img
