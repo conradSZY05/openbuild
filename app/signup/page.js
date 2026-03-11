@@ -34,7 +34,7 @@ export default function Signup() {
     return (
       <main className="min-h-screen bg-stone-300 flex flex-col items-center justify-center px-4">
         <div className="bg-stone-200 border border-stone-400 p-8 max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-stone-800 mb-2">Check your email</h2>
+          <h2 className="text-2xl font-bold text-stone-800 mb-2">Email not arriving? Check your spam folder, or email contact@openbuild.net and we'll confirm your account within 24 hours.</h2>
           <p className="text-stone-500 mb-4">We sent a confirmation link to <strong>{email}</strong></p>
           <a href="/login" className="text-sm underline" style={{ color: '#2c4a7c' }}>Back to login</a>
         </div>
