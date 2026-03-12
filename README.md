@@ -4,17 +4,17 @@ A collaboration platform for university students to find project partners.
 
 Live at [openbuild.net](https://www.openbuild.net)
 
-## What it does
-Students post project listings looking for collaborators — side projects, hackathons, coursework, startups. Other students can browse, filter by skill, and reach out.
+## What it is
+Students post project listings looking for collaborators - side projects, hackathons, coursework, startups. Other students can browse, filter by skill, and reach out.
 
-## Tech stack
+## stack
 - **Frontend**: Next.js 16, Tailwind CSS v4
 - **Backend**: Supabase (auth, database, storage)
 - **Email**: Resend
 - **Deployment**: Vercel
 
 ## Features
-- University email gate (.ac.uk / .edu only)
+- University email gate (e.g .ac.uk / .edu)
 - Anonymous mode by default
 - Project listings with skill filtering
 - User profiles with reputation system
