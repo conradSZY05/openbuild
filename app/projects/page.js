@@ -55,7 +55,7 @@ export default function Projects() {
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
       <div className="flex-1 md:mr-72">
 
-        {/* Header */}
+        {/* header */}
         <div className="flex flex-wrap justify-between items-center mb-3 gap-2 border-b border-stone-400 pb-3">
           <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
@@ -97,7 +97,7 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Search and filter bar */}
+        {/* search and filter bar */}
         <div className="flex flex-wrap gap-2 mb-3">
           <input
             type="text"
@@ -123,7 +123,7 @@ export default function Projects() {
           )}
         </div>
 
-        {/* Project list */}
+        {/* projects list */}
         <div className="flex flex-col">
           {loading && (
             <div className="bg-stone-200 border border-stone-400 px-4 py-6 text-stone-500 text-sm text-center">Loading...</div>
@@ -135,7 +135,7 @@ export default function Projects() {
             </div>
           )}
 
-          {/* Column headers — desktop only */}
+          {/* column desktop only */}
           {filtered.length > 0 && (
             <div className="hidden md:flex text-white text-sm" style={{ backgroundColor: '#2c4a7c' }}>
               <div className="px-4 py-2 font-semibold" style={{ width: '160px', minWidth: '160px' }}>Posted By</div>
@@ -160,7 +160,7 @@ export default function Projects() {
                 style={{ backgroundColor: index % 2 === 0 ? '#e7e5e4' : '#d6d3d1' }}
                 onClick={() => window.location.href = `/projects/${project.id}`}
               >
-                {/* Desktop layout */}
+                {/* desktop layout */}
                 <div className="hidden md:flex">
                   <div
                     className="flex flex-col items-center justify-start text-center p-3 border-r border-stone-400"
@@ -190,7 +190,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* Mobile layout — card style */}
+                {/* mobile layout cards */}
                 <div className="md:hidden p-4">
                   <div className="flex items-center gap-3 mb-2">
                     <img
@@ -219,7 +219,7 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Right sidebar — desktop only */}
+      {/* right desktop only */}
       <div className="hidden md:block fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4" style={{ width: '260px' }}>
         <p className="text-xs text-stone-500 font-semibold uppercase tracking-wide mb-3">Societies and Events</p>
         <div className="bg-stone-300 border border-stone-400 p-3 text-xs text-stone-500 text-center">Your ad here</div>
