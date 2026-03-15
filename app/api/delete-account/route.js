@@ -13,10 +13,10 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
   }
 
-  // Delete profile (auth user deletion will cascade via ON DELETE SET NULL on projects)
+  // ddel profile (auth user deletion will cascade via ON DELETE SET NULL on projects)
   await supabase.from('profiles').delete().eq('id', userId)
 
-  // Delete the auth user using the service role key
+  // delete the auth user using the service role key
   const { error } = await supabase.auth.admin.deleteUser(userId)
 
   if (error) {
