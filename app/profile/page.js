@@ -138,7 +138,7 @@ export default function Profile() {
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
       <div className="flex-1 w-full max-w-4xl mx-auto">
 
-        {/* Nav */}
+        {/* nav */}
         <div className="flex flex-wrap justify-between items-center mb-6 gap-2 border-b border-stone-400 pb-3">
           <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
@@ -159,10 +159,10 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Content */}
+        {/* cont */}
         <div className="flex flex-col md:flex-row gap-4 items-start">
 
-          {/* Left — edit form */}
+          {/* edit form */}
           <div className="bg-stone-200 border border-stone-400 p-6 w-full md:flex-1">
             <h2 className="text-lg font-bold text-stone-800 mb-4">Edit Profile</h2>
             <form onSubmit={handleSave} className="flex flex-col gap-4">
@@ -217,7 +217,7 @@ export default function Profile() {
                 />
               </div>
 
-              {/* Avatar upload */}
+              {/* avatar upload */}
               <div>
                 <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide block mb-2">Profile Picture</label>
                 <div className="flex items-center gap-3">
@@ -257,7 +257,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              {/* Anonymity toggle */}
+              {/* anonymity toggle */}
               <div className="flex items-center gap-3 border border-stone-400 bg-stone-100 px-4 py-3">
                 <input
                   type="checkbox"
@@ -288,7 +288,7 @@ export default function Profile() {
               {saved && <p className="text-green-600 text-sm text-center">Profile saved!</p>}
             </form>
 
-            {/* Delete account */}
+            {/* delete account */}
             <div className="mt-8 pt-6 border-t border-stone-300">
               <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-3">Danger Zone</p>
               {!showDeleteConfirm ? (
@@ -326,7 +326,7 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Right — preview */}
+          {/* preview */}
           <div className="bg-stone-200 border border-stone-400 p-6 w-full md:w-72 md:min-w-72">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-4">Profile Preview</p>
             <img
@@ -358,7 +358,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* footer */}
       <div className="text-xs text-stone-400 text-center py-4 mt-8">
         <a href="/privacy" className="hover:underline" style={{ color: '#2c4a7c' }}>Privacy Policy</a>
         {' · '}
