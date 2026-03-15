@@ -118,7 +118,7 @@ export default function ProjectPage({ params: paramsPromise }) {
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
       <div className="flex-1 md:mr-72">
 
-        {/* Header */}
+        {/* head */}
         <div className="flex flex-wrap justify-between items-center mb-3 gap-2 border-b border-stone-400 pb-3">
           <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
@@ -152,7 +152,7 @@ export default function ProjectPage({ params: paramsPromise }) {
           </div>
         </div>
 
-        {/* Title bar */}
+        {/* title */}
         <div className="flex text-white text-sm mb-0" style={{ backgroundColor: '#2c4a7c' }}>
           <div className="hidden md:block px-4 py-2 font-semibold" style={{ width: '200px', minWidth: '200px' }}>Posted By</div>
           <div className="px-4 py-2 font-bold text-base flex-1 md:border-l-2" style={{ borderColor: '#1e3560' }}>{project.title}</div>
@@ -164,10 +164,10 @@ export default function ProjectPage({ params: paramsPromise }) {
           </div>
         </div>
 
-        {/* Main content — stacks on mobile */}
+        {/* main content stacks on mobile */}
         <div className="flex flex-col md:flex-row border border-stone-400 border-t-0">
 
-          {/* Profile sidebar — horizontal strip on mobile, vertical column on desktop */}
+          {/* profile sidebar horizontal strip on mobile, vertical column on desktop */}
           <div className="bg-stone-200 md:border-r border-b md:border-b-0 border-stone-400 p-4 flex flex-row md:flex-col items-center md:text-center gap-4 md:gap-0 md:w-52 md:min-w-52">
             <div className="md:hidden flex items-center gap-4 w-full">
               <img
@@ -191,7 +191,7 @@ export default function ProjectPage({ params: paramsPromise }) {
               </div>
             </div>
 
-            {/* Desktop sidebar content */}
+            {/* desktop sidebar */}
             <div className="hidden md:flex flex-col items-center text-center w-full" style={{ width: '200px', minWidth: '200px' }}>
               <img
                 src={getAvatar(profile?.avatar_url)}
@@ -225,7 +225,7 @@ export default function ProjectPage({ params: paramsPromise }) {
             </div>
           </div>
 
-          {/* Project content */}
+          {/* project content */}
           <div className="flex-1 bg-stone-100 p-6">
             {project.skills && (
               <div className="mb-6">
@@ -285,7 +285,7 @@ export default function ProjectPage({ params: paramsPromise }) {
           </div>
         </div>
 
-        {/* Comments */}
+        {/* coments */}
         <div className="mt-4 border border-stone-400">
           <div className="px-4 py-2 text-white text-sm font-semibold" style={{ backgroundColor: '#2c4a7c' }}>
             Comments ({comments.length})
@@ -375,7 +375,7 @@ export default function ProjectPage({ params: paramsPromise }) {
 
       </div>
 
-      {/* Lightbox */}
+      {/* lightbox */}
       {zoomedImage && (
         <div
           className="fixed inset-0 flex items-center justify-center z-50 cursor-zoom-out"
@@ -387,7 +387,7 @@ export default function ProjectPage({ params: paramsPromise }) {
         </div>
       )}
 
-      {/* Right sidebar — desktop only */}
+      {/* right desktop only */}
       <div className="hidden md:block fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4" style={{ width: '260px' }}>
         <p className="text-xs text-stone-500 font-semibold uppercase tracking-wide mb-3">Societies and Events</p>
         <div className="bg-stone-300 border border-stone-400 p-3 text-xs text-stone-500 text-center">Your ad here</div>
