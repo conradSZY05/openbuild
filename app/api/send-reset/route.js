@@ -9,20 +9,20 @@ const supabase = createClient(
 export async function POST(request) {
   const { email } = await request.json()
 
-  // Find user
+  // find user
   const { data: authData } = await supabase.auth.admin.listUsers()
   const user = authData?.users.find(u => u.email === email)
   if (!user) return NextResponse.json({ success: true }) // Don't reveal if email exists
 
-  // Generate token
+  // generate the token
   const array = new Uint8Array(32)
   globalThis.crypto.getRandomValues(array)
   const token = Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('')
 
-  // Save token
+  // save token
   await supabase.from('password_resets').insert({ user_id: user.id, token })
 
-  // Send email
+  // send email
   const resetUrl = `https://www.openbuild.net/reset-password?token=${token}`
   await fetch('https://api.resend.com/emails', {
     method: 'POST',

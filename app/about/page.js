@@ -14,7 +14,7 @@ export default function About() {
     <main className="min-h-screen bg-stone-300 px-4 py-8 flex flex-col">
     <div className="flex-1 md:mr-72">
 
-        {/* Header */}
+        {/* head */}
         <div className="flex flex-wrap justify-between items-center mb-3 gap-2 border-b border-stone-400 pb-3">
         <div className="flex items-center gap-4">
             <a href="/projects" className="hover:opacity-70">
@@ -48,7 +48,7 @@ export default function About() {
         </div>
         </div>
 
-        {/* Content */}
+        {/* main cont */}
         <div className="bg-stone-200 border border-stone-400 p-8">
           <h1 className="text-2xl font-bold text-stone-800 mb-6">About OpenBuild</h1>
           <div className="flex flex-col gap-6 text-sm text-stone-700 leading-relaxed">
@@ -99,7 +99,7 @@ export default function About() {
 
       </div>
 
-    {/* Right sidebar — desktop only */}
+    {/* right sidebar bit for desktop */}
     <div className="hidden md:block fixed top-0 right-0 h-full bg-stone-200 border-l border-stone-400 p-4" style={{ width: '260px' }}>
         <p className="text-xs text-stone-500 font-semibold uppercase tracking-wide mb-3">Societies and Events</p>
         <div className="bg-stone-300 border border-stone-400 p-3 text-xs text-stone-500 text-center">Your ad here</div>
